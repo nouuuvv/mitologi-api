@@ -10,4 +10,5 @@ app.use(express.json());
 
 app.use("/mitologi", mitologiRoutes);
 
-module.exports.handler = serverless(app);
+module.exports = serverless(app);
+
