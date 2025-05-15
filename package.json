@@ -1,0 +1,7 @@
+{
+  "name": "mitologi-api",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.6"
+  }
+}
