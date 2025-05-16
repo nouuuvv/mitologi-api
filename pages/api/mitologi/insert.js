@@ -11,7 +11,7 @@ const setCORS = (res) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 };
 
 export default async function handler(req, res) {
@@ -24,13 +24,15 @@ export default async function handler(req, res) {
 
   const { judul, deskripsi, gambar } = req.body;
 
-  const { data, error } = await supabase
-    .from("mitologi")
-    .insert([{ judul, deskripsi, gambar }]);
+  try {
+    const { data, error } = await supabase
+      .from("mitologi")
+      .insert([{ judul, deskripsi, gambar }]);
 
-  if (error) {
-    return res.status(500).json({ error: error.message || error });
+    if (error) throw error;
+
+    res.status(201).json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message || "Internal server error" });
   }
-
-  res.status(201).json(data);
 }
