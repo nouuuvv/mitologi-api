@@ -1,11 +1,10 @@
-// /api/mitologi/index.js
-const { createClient } = require("@supabase/supabase-js");
+import { createClient } from "@supabase/supabase-js";
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
 
-// —— CORS ——
 const setCORS = (res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -15,7 +14,7 @@ const setCORS = (res) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 };
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   setCORS(res);
   if (req.method === "OPTIONS") return res.status(200).end();
 
@@ -40,4 +39,4 @@ module.exports = async (req, res) => {
     console.error("API /mitologi error:", err);
     return res.status(500).json({ error: err.message || "Internal error" });
   }
-};
+}
