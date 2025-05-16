@@ -11,7 +11,7 @@ const setCORS = (res) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 };
 
 export default async function handler(req, res) {
@@ -29,16 +29,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "ID diperlukan" });
   }
 
-  try {
-    const { data, error } = await supabase
-      .from("mitologi")
-      .update({ judul, deskripsi, gambar })
-      .eq("id", id);
+  const { data, error } = await supabase
+    .from("mitologi")
+    .update({ judul, deskripsi, gambar })
+    .eq("id", id);
 
-    if (error) throw error;
-
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message || "Internal server error" });
+  if (error) {
+    return res.status(500).json({ error: error.message || error });
   }
+
+  res.status(200).json(data);
 }
